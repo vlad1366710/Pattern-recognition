@@ -1,31 +1,19 @@
-# Импортируем необходимые библиотеки
-import numpy as np  # Для работы с массивами и числовыми операциями
-import pandas as pd  # Для работы с данными в формате таблиц
-from sklearn.model_selection import train_test_split  # Для разделения данных на обучающую и тестовую выборки
-from collections import Counter  # Для подсчета частоты элементов (не используется в данном коде, но можно оставить для будущих улучшений)
-import matplotlib.pyplot as plt  # Для построения графиков
-import seaborn as sns  # Для визуализации данных
+
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+
 
 # Загрузка данных
-data = pd.read_csv('iris.csv.gz')  # Загружаем данные из файла iris.csv.gz в формате CSV с помощью Pandas
+data = pd.read_csv('iris.csv.gz')
 
 # Разделение данных на признаки (X) и метки классов (y)
 X = data.iloc[:, :-1].values  # Извлекаем все столбцы, кроме последнего, как признаки
 y = data.iloc[:, -1].values  # Извлекаем последний столбец как метки классов
 
 # Разделение на обучающую и тестовую выборки
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
-# Разделяем данные на 90% для обучения и 10% для тестирования, фиксируя случайное состояние для воспроизводимости
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=23)
 
-# Визуализация данных
-plt.figure(figsize=(12, 6))  # Устанавливаем размер графика
-sns.scatterplot(x=data['sepal_length'], y=data['sepal_width'], hue=data['species'], palette='Set1')
-# Строим график рассеяния для длины и ширины чашелистика, раскрашивая точки по видам
-plt.title('Длина и ширина чашелистика')  # Заголовок графика
-plt.xlabel('Длина чашелистика')  # Подпись оси X
-plt.ylabel('Ширина чашелистика')  # Подпись оси Y
-plt.legend(title='Вид')  # Заголовок легенды
-plt.show()  # Показываем график
 
 # Реализация метрик
 def euclidean_distance(x1, x2):
@@ -67,8 +55,6 @@ def classify(X_train, y_train, x_test, metric):
     distances.sort(key=lambda x: x[0])  # Сортируем по расстоянию
     return distances[0][1]  # Возвращаем метку класса ближайшего соседа
 
-
-
 # Тестирование на тестовой выборке
 def test_classification(X_train, y_train, X_test, y_test, metric):
     """
@@ -94,7 +80,7 @@ def test_classification(X_train, y_train, X_test, y_test, metric):
     accuracy = correct / len(X_test)  # Вычисляем точность
     return accuracy  # Возвращаем точность
 
-# Демонстрация работы программы
+
 metrics = {
     'Euclidean': euclidean_distance,
     'Hamming': hamming_distance,
